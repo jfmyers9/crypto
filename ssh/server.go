@@ -202,7 +202,7 @@ func (s *connection) serverHandshake(config *ServerConfig) (*Permissions, error)
 	s.sessionID = s.transport.getSessionID()
 
 	var packet []byte
-	if packet, err = s.transport.readPacket(); err != nil {
+	if packet, err = s.transport.readPacketIgnoreKex(); err != nil {
 		return nil, err
 	}
 
@@ -273,7 +273,7 @@ func (s *connection) serverAuthenticate(config *ServerConfig) (*Permissions, err
 userAuthLoop:
 	for {
 		var userAuthReq userAuthRequestMsg
-		if packet, err := s.transport.readPacket(); err != nil {
+		if packet, err := s.transport.readPacketIgnoreKex(); err != nil {
 			return nil, err
 		} else if err = Unmarshal(packet, &userAuthReq); err != nil {
 			return nil, err
@@ -464,7 +464,7 @@ func (c *sshClientKeyboardInteractive) Challenge(user, instruction string, quest
 		return nil, err
 	}
 
-	packet, err := c.transport.readPacket()
+	packet, err := c.transport.readPacketIgnoreKex()
 	if err != nil {
 		return nil, err
 	}

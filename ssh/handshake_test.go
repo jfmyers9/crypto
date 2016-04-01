@@ -430,7 +430,7 @@ func TestDisconnect(t *testing.T) {
 
 	trC.writePacket([]byte{msgRequestSuccess, 0, 0})
 	errMsg := &disconnectMsg{
-		Reason: 42,
+		Reason:  42,
 		Message: "such is life",
 	}
 	trC.writePacket(Marshal(errMsg))
@@ -441,7 +441,7 @@ func TestDisconnect(t *testing.T) {
 		t.Fatalf("readPacket 1: %v", err)
 	}
 	if packet[0] != msgRequestSuccess {
-		t.Errorf("got packet %v, want packet type %d", packet,  msgRequestSuccess)
+		t.Errorf("got packet %v, want packet type %d", packet, msgRequestSuccess)
 	}
 
 	_, err = trS.readPacket()

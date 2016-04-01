@@ -132,6 +132,18 @@ func (t *handshakeTransport) id() string {
 	return "client"
 }
 
+func (t *handshakeTransport) readPacketIgnoreKex() ([]byte, error) {
+	for {
+		p, err := t.readPacket()
+		if err != nil {
+			return nil, err
+		} else if p[0] == msgNewKeys {
+			continue
+		}
+		return p, nil
+	}
+}
+
 func (t *handshakeTransport) readPacket() ([]byte, error) {
 	p, ok := <-t.incoming
 	if !ok {

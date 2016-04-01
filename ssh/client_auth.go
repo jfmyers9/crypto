@@ -17,7 +17,7 @@ func (c *connection) clientAuthenticate(config *ClientConfig) error {
 	if err := c.transport.writePacket(Marshal(&serviceRequestMsg{serviceUserAuth})); err != nil {
 		return err
 	}
-	packet, err := c.transport.readPacket()
+	packet, err := c.transport.readPacketIgnoreKex()
 	if err != nil {
 		return err
 	}
